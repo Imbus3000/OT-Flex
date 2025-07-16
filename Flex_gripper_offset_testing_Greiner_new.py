@@ -18,7 +18,7 @@ def add_parameters(parameters: protocol_api.ParameterContext):
     parameters.add_int(
         variable_name='millimeters',
         display_name='z-offset',
-        description='How many millimeters above the middle of the plate, should the gripper grab the plate?',
+        description='How many millimeters above the plates middle, should the gripper grab the plate?',
         default=0,
         minimum=0,
         maximum=20,
@@ -38,7 +38,7 @@ def run(protocol: protocol_api.ProtocolContext):
     #reservoir = protocol.load_labware("integra300ml_reservoir", location="C2")
 
     #Load Greiner 96-well plate in slot D2
-    sample_plate = protocol.load_labware("greiner_96_well_plate_655090", location="D2")
+    sample_plate = protocol.load_labware("greiner_96_wellplate_655090", location="D2")
 
     #Load Trash in Slot A3 (STANDARD)
     trash = protocol.load_trash_bin("A3")
@@ -63,9 +63,12 @@ def run(protocol: protocol_api.ProtocolContext):
     #you will have to add a positive z-offset value, to grip the plate higher/further away from the deck.
     #A negative z-offset value makes the gripper move deeper i.e. closer down toward the deck.
     #A positive z-offset value makes the gripper move further away from the deck
+
+
     protocol.move_labware (
         labware=sample_plate,
         new_location='C3',
         use_gripper=True,
-        pick_up_offset={'x': 0, 'y': 0, 'z': protocol.params.millimeters}
+        pick_up_offset={'x': 0, 'y': 0, 'z': protocol.params.millimeters},
+        drop_offset={'x': 0, 'y': 0, 'z': protocol.params.millimeters}
     )
